@@ -17,21 +17,25 @@ class HuggingFaceService:
 
 
     async def generate_image(self, data: GenerationCreate) -> str:
+        
+        print(data,'data inside hugging face service')
+        print()         
+        
         try:
             # Use InferenceClient to generate image from text prompt
             # This returns a PIL.Image object
             image = self.client.text_to_image(
             prompt=data.prompt,
             model=self.model,
-            width=540,          # ✅ image width
-            height=540,         # ✅ image height
+            width=data.settings.width,          # ✅ image width
+            height=data.settings.height,         # ✅ image height
             guidance_scale=7.5,  # optional (CFG scale)
             num_inference_steps=30,  # optional
             seed=42              # optional (for reproducibility)
             )
 
 
-            print(image.show(), 'hugging face response')
+            # print(image.show(), 'hugging face response')
 
             # Convert PIL Image to bytes for Cloudinary upload
             # Create a BytesIO buffer to hold the image data

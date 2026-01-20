@@ -21,19 +21,19 @@ async def create_generation(
     prompt_response = await generation_handler.create_generation(str(current_user.id), data)
     return {
         "success":True,
-        "message":"succesfully getting"
+        "message":"succesfully getting",
+        "data":prompt_response
     }
 
 
 @router.get("/", response_model=ApiResponse)
-async def get_generations(current_user: User = Depends(get_current_user)):
-    """Get all generations for current user"""
-    # return await generation_handler.get_generations(str(current_user.id))
-    return {
-        "success":True,
-        "message":"succesfully getting"
-    }
-
+async def get_generations(
+    request: Request,
+    response: Response,
+    current_user: User = Depends(get_current_user)
+):
+    """Get all generations for the current user"""
+    return await generation_handler.get_generations(str(current_user.id))
 
 @router.get("/{generation_id}", response_model=GenerationResponse)
 async def get_generation(

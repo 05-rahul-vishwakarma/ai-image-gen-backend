@@ -23,12 +23,10 @@ async def create_generation(user_id: str, data: GenerationCreate) -> GenerationR
         try:
             # Generate image using Hugging Face Stable Diffusion
             # Returns base64 encoded image data
-            print(data)
             image_data = await huggingface_service.generate_image(data)
-            print(image_data[:100], 'image data preview')  # Print first 100 chars
-
+            
             # Update generation with image data and COMPLETED status
-            generation.image_url = image_data  # Store base64 image data
+            generation.image_url = image_data  # Store cloudnary imge url
             generation.status = GenerationStatus.COMPLETED
             await generation.save()
 
@@ -55,14 +53,25 @@ async def create_generation(user_id: str, data: GenerationCreate) -> GenerationR
         raise HTTPException(status_code=500, detail=f"Failed to create generation: {str(e)}")
 
 
-async def get_generations(user_id: str) -> List[GenerationResponse]:
-    """Get all generations for user"""
-    try:
-        generations = await Generation.find(
-            Generation.user_id == PydanticObjectId(user_id)
-        ).sort(-Generation.created_at).to_list()
 
-        return [
+async def get_generations(user_id: str):
+    """Get all generations for a user with structured response"""
+    try:
+        all_generations = await (
+            Generation.find(Generation.user_id == PydanticObjectId(user_id))
+            .sort(-Generation.created_at)  # newest first
+            .to_list()
+        )
+
+        if not all_generations:
+            return {
+                "success": True,
+                "message": "No generations found for this user",
+                "data": []
+            }
+
+        # Convert Beanie documents to Pydantic response objects
+        generations_data = [
             GenerationResponse(
                 id=str(gen.id),
                 user_id=str(gen.user_id),
@@ -72,11 +81,24 @@ async def get_generations(user_id: str) -> List[GenerationResponse]:
                 settings=gen.settings,
                 created_at=gen.created_at
             )
-            for gen in generations
+            for gen in all_generations
         ]
 
+        return {
+            "success": True,
+            "message": "Generations fetched successfully",
+            "data": generations_data
+        }
+
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to fetch generations: {str(e)}")
+        # Log the error for debugging
+        print(e, "Error fetching generations")
+
+        return {
+            "success": False,
+            "message": f"Failed to fetch generations: {str(e)}",
+            "data": []
+        }
 
 
 async def get_generation(user_id: str, generation_id: str) -> GenerationResponse:

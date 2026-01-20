@@ -15,8 +15,7 @@ class GenerationStatus(str, Enum):
 class GenerationSettings(BaseModel):
     width: int = 512
     height: int = 512
-    model: str = "dall-e-3"
-    style: Optional[str] = None
+    # style: Optional[str] = None
 
 
 class Generation(Document):
