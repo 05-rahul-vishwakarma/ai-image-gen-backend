@@ -1,0 +1,77 @@
+{
+  "description": "This is what a user sends to POST /api/generations/",
+  "examples": [
+    {
+      "name": "Basic Example - Just a prompt",
+      "payload": {
+        "prompt": "A cute cat sitting on a windowsill looking at birds outside"
+      }
+    },
+    {
+      "name": "With Vivid Style - For colorful, dramatic images",
+      "payload": {
+        "prompt": "A futuristic city with flying cars and neon lights at night",
+        "settings": {
+          "model": "dall-e-3",
+          "style": "vivid"
+        }
+      }
+    },
+    {
+      "name": "With Natural Style - For realistic, subtle images",
+      "payload": {
+        "prompt": "A professional business woman in a modern office",
+        "settings": {
+          "model": "dall-e-3",
+          "style": "natural"
+        }
+      }
+    },
+    {
+      "name": "Creative Art",
+      "payload": {
+        "prompt": "An abstract painting of joy and happiness using bold colors and flowing shapes"
+      }
+    },
+    {
+      "name": "Landscape Photography",
+      "payload": {
+        "prompt": "A serene mountain lake at sunrise with mist and golden light"
+      }
+    },
+    {
+      "name": "Food Photography",
+      "payload": {
+        "prompt": "A gourmet chocolate cake with strawberries, professional food photography, dramatic lighting"
+      }
+    },
+    {
+      "name": "Product Design",
+      "payload": {
+        "prompt": "A sleek modern smartwatch on white background, studio lighting"
+      }
+    },
+    {
+      "name": "Character Design",
+      "payload": {
+        "prompt": "A friendly cartoon robot with big eyes and colorful LED lights",
+        "settings": {
+          "model": "dall-e-3",
+          "style": "vivid"
+        }
+      }
+    },
+    {
+      "name": "Fantasy Scene",
+      "payload": {
+        "prompt": "A magical forest with glowing mushrooms, fireflies, and a crystal stream under moonlight"
+      }
+    },
+    {
+      "name": "Architecture",
+      "payload": {
+        "prompt": "A modern eco-friendly house with large windows and solar panels, architectural rendering"
+      }
+    }
+  ]
+}
